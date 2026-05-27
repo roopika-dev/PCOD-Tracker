@@ -1,0 +1,187 @@
+﻿@model PCODTracker.UI.Models.DailyHealthViewModel
+
+<div class="tracker-page">
+
+    <div class="tracker-header">
+        🌸 Daily Wellness
+    </div>
+
+    <form method="post">
+
+        <!-- WATER -->
+
+        <div class="tracker-section">
+
+            <h3>💧 Water Intake</h3>
+
+            <div class="water-buttons">
+
+                @for (int i = 1; i <= 8; i++)
+                {
+                    <button type="button"
+                            class="water-btn"
+                            onclick="setWater(@i)">
+                        💧
+                    </button>
+                }
+
+            </div>
+
+            <div class="selected-value">
+                <span id="waterValue">0</span> Glasses
+            </div>
+
+            <input type="hidden"
+                   id="WaterIntake"
+                   name="WaterIntake" />
+
+        </div>
+
+        <!-- SLEEP -->
+
+        <div class="tracker-section">
+
+            <h3>😴 Sleep Hours</h3>
+
+            <input type="range"
+                   min="1"
+                   max="12"
+                   value="6"
+                   class="sleep-slider"
+                   id="sleepSlider"
+                   name="SleepHours"
+                   oninput="updateSleep()" />
+
+            <div class="selected-value">
+                <span id="sleepValue">6</span> Hours
+            </div>
+
+        </div>
+
+        <!-- MOOD -->
+
+        <div class="tracker-section">
+
+            <h3>😊 Mood</h3>
+
+            <div class="mood-buttons">
+
+                <button type="button" onclick="setMood('Happy')">😄</button>
+                <button type="button" onclick="setMood('Calm')">😌</button>
+                <button type="button" onclick="setMood('Sad')">😔</button>
+                <button type="button" onclick="setMood('Tired')">😴</button>
+
+            </div>
+
+            <div class="selected-value">
+                <span id="moodValue">Select Mood</span>
+            </div>
+
+            <input type="hidden"
+                   id="Mood"
+                   name="Mood" />
+
+        </div>
+
+        <!-- FOOD -->
+
+        <div class="tracker-section">
+
+            <h3>🥗 Healthy Food?</h3>
+
+            <div class="food-buttons">
+
+                <button type="button"
+                        onclick="setFood(true)">
+                    Healthy
+                </button>
+
+                <button type="button"
+                        onclick="setFood(false)">
+                    Junk
+                </button>
+
+            </div>
+            <input type="hidden"
+                   id="HealthyFood"
+                   name="HealthyFood"
+                   value="false" />
+
+        </div>
+
+        <!-- EXERCISE -->
+
+        <div class="tracker-section">
+
+            <h3>🏃 Exercise Done?</h3>
+
+            <select name="ExerciseDone"
+                    class="tracker-select">
+
+                <option value="true">
+                    Yes
+                </option>
+
+                <option value="false">
+                    No
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- SUBMIT -->
+
+        <button type="submit"
+                class="save-btn">
+
+            Save Today 💖
+
+        </button>
+        <div style="display:none">
+
+            Water:
+            <span id="debugWater"></span>
+
+            Mood:
+            <span id="debugMood"></span>
+
+            Food:
+            <span id="debugFood"></span>
+
+        </div>
+    </form>
+
+</div>
+
+<script>
+
+    function setWater(value)
+    {
+        document.getElementById("WaterIntake").value = value;
+        document.getElementById("waterValue").innerText = value;
+    }
+
+    function updateSleep()
+    {
+        document.getElementById("sleepValue").innerText =
+            document.getElementById("sleepSlider").value;
+    }
+
+    function setMood(value)
+    {
+        document.getElementById("Mood").value = value;
+        document.getElementById("moodValue").innerText = value;
+    }
+
+        function setFood(value)
+    {
+        document.getElementById("HealthyFood").value =
+            value.toString();
+
+        console.log(
+            "HealthyFood:",
+            document.getElementById("HealthyFood").value);
+    }
+
+</script>

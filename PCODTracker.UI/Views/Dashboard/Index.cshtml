@@ -1,0 +1,245 @@
+﻿@model List<PCODTracker.UI.Models.DailyHistoryResponse>
+
+<div class="top-box">
+
+    <h1>🌸 Welcome</h1>
+
+    <p>@ViewBag.Email</p>
+
+</div>
+
+<a href="/Tracker/Index">
+
+    <button class="add-btn">
+        ➕ Add Today Health
+    </button>
+
+</a>
+
+@if (TempData["Success"] != null)
+{
+    <div id="toastPopup" class="toast-popup">
+
+        @TempData["Success"]
+
+    </div>
+}
+@{
+    int score = 0;
+
+    if (Model != null && Model.Any())
+    {
+        var latest = Model.First();
+
+        if (latest.WaterIntake >= 6)
+            score += 20;
+
+        if (latest.SleepHours >= 7)
+            score += 20;
+
+        if (latest.ExerciseDone)
+            score += 20;
+
+        if (latest.HealthyFood)
+            score += 20;
+
+        if (latest.Mood == "Happy")
+            score += 20;
+    }
+}
+@{
+    int streak = 0;
+
+    if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            bool healthyDay =
+                item.WaterIntake >= 6 &&
+                item.SleepHours >= 7 &&
+                item.HealthyFood &&
+                item.Mood == "Happy";
+
+            if (healthyDay)
+            {
+                streak++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+}
+
+<div class="streak-box">
+
+    🔥 @streak Day Healthy Streak
+
+</div>
+<div class="wellness-box">
+
+    <div class="wellness-title">
+        🌸 Today's Wellness
+    </div>
+
+    <div class="wellness-score">
+        @score%
+    </div>
+
+    <div class="wellness-status">
+
+        @if (score >= 80)
+        {
+            <span>Excellent ✨</span>
+        }
+        else if (score >= 60)
+        {
+            <span>Good 💖</span>
+        }
+        else
+        {
+            <span>Needs Care 🌿</span>
+        }
+
+    </div>
+
+</div>
+
+@{
+    int totalDays =
+        Model != null ? Model.Count : 0;
+
+    double avgWater =
+        Model != null && Model.Any()
+        ? Model.Average(x => x.WaterIntake)
+        : 0;
+
+    double avgSleep =
+        Model != null && Model.Any()
+        ? Model.Average(x => x.SleepHours)
+        : 0;
+
+    int healthyDays =
+        Model != null
+        ? Model.Count(x => x.HealthyFood)
+        : 0;
+}
+
+<div class="analytics-container">
+
+    <div class="analytics-card">
+        <h3>📅 Total Days</h3>
+        <div class="analytics-value">
+            @totalDays
+        </div>
+    </div>
+
+    <div class="analytics-card">
+        <h3>💧 Avg Water</h3>
+        <div class="analytics-value">
+            @avgWater.ToString("0")
+        </div>
+    </div>
+
+    <div class="analytics-card">
+        <h3>😴 Avg Sleep</h3>
+        <div class="analytics-value">
+            @avgSleep.ToString("0.0") hrs
+        </div>
+    </div>
+
+    <div class="analytics-card">
+        <h3>🥗 Healthy Days</h3>
+        <div class="analytics-value">
+            @healthyDays
+        </div>
+    </div>
+
+</div>
+
+<h2 class="section-title">
+    ❤️ Health Journey
+</h2>
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="history-item">
+            <div class="history-date">
+
+                📅 @item.Date
+
+            </div>
+
+            <div class="history-row">
+                <span>💧 Water</span>
+                <strong>@item.WaterIntake Glasses</strong>
+            </div>
+
+            <div class="history-row">
+                <span>😴 Sleep</span>
+                <strong>@item.SleepHours Hours</strong>
+            </div>
+
+            <div class="history-row">
+                <span>😊 Mood</span>
+                <strong>@item.Mood</strong>
+            </div>
+
+            <div class="history-row">
+                <span>🥗 Food</span>
+                <strong>
+                    @(item.HealthyFood ? "Healthy" : "Normal")
+                </strong>
+            </div>
+
+        </div>
+    }
+}
+else
+{
+    <div class="empty-box">
+        No health records yet 🌸
+    </div>
+}
+
+<script>
+    setTimeout(function () {
+
+        var toast =
+            document.getElementById("toastPopup");
+
+        if (toast) {
+            toast.style.opacity = "0";
+
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 500);
+        }
+
+    }, 2500);
+</script>
+<div class="bottom-nav">
+
+    <a href="/Dashboard/Index" class="nav-item">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="/Tracker/Index" class="nav-item">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="/Dashboard/History" class="nav-item">
+        📅
+        <span>History</span>
+    </a>
+
+    <a href="/Analytics/Index" class="nav-item">
+        📈
+        <span>Analytics</span>
+    </a>
+
+</div>

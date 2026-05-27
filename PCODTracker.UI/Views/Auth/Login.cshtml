@@ -1,0 +1,176 @@
+﻿@model PCODTracker.Web.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+
+    body {
+        background: #fff5fa;
+        min-height: 100vh;
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 380px;
+        margin: 60px auto;
+        background: white;
+        border-radius: 25px;
+        padding: 35px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        animation: fadeIn 0.8s ease;
+    }
+
+    .logo {
+        font-size: 55px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 32px;
+        font-weight: bold;
+        color: #ff4f8b;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: gray;
+        margin-bottom: 30px;
+    }
+
+    .input-box {
+        margin-bottom: 20px;
+    }
+
+        .input-box input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+            .input-box input:focus {
+                background: #ffe6ef;
+                transform: scale(1.02);
+            }
+
+    .login-btn {
+        width: 100%;
+        border: none;
+        padding: 15px;
+        border-radius: 15px;
+        background: linear-gradient(90deg,#ff4f8b,#ff758c);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,80,120,0.4);
+        }
+
+    .bottom-text {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        .bottom-text a {
+            text-decoration: none;
+            color: #ff4f8b;
+            font-weight: bold;
+        }
+
+    .success-msg {
+        color: green;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .error-msg {
+        color: red;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    @@keyframes fadeIn {
+
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+</style>
+
+<div class="auth-container">
+
+    <div class="logo">💖</div>
+
+    <div class="title">PCOD Tracker</div>
+
+    <div class="subtitle">
+        Welcome Back
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div style="
+            background:#d4edda;
+            color:#155724;
+            padding:12px;
+            border-radius:12px;
+            margin-bottom:20px;
+            text-align:center;
+            font-weight:bold;">
+
+            @TempData["Success"]
+
+        </div>
+    }
+
+    <form method="post">
+
+        <div class="input-box">
+            <input asp-for="Email" placeholder="Email Address" />
+        </div>
+
+        <div class="input-box">
+            <input asp-for="Password"
+                   type="password"
+                   placeholder="Password" />
+        </div>
+
+        <button type="submit" class="login-btn">
+            Login
+        </button>
+
+    </form>
+
+    @if (ViewBag.Result != null)
+    {
+        <div class="error-msg">
+            @ViewBag.Result
+        </div>
+    }
+
+    <div class="bottom-text">
+        Don’t have account?
+        <a href="/Auth/Register">Register</a>
+    </div>
+
+</div>

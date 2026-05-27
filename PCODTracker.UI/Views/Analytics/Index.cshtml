@@ -1,0 +1,101 @@
+﻿@model List<PCODTracker.UI.Models.DailyHistoryResponse>
+
+<h1 class="analytics-page-title">
+    📈 Health Analytics
+</h1>
+
+<div class="chart-container">
+
+    <canvas id="waterChart"></canvas>
+
+</div>
+
+<div class="chart-container">
+
+    <canvas id="sleepChart"></canvas>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const labels = [
+        @foreach (var item in Model)
+        {
+            @Html.Raw($"'{item.Date}',")
+        }
+    ];
+
+    const waterData = [
+        @foreach (var item in Model)
+        {
+            @Html.Raw($"{item.WaterIntake},")
+        }
+    ];
+
+    const sleepData = [
+        @foreach (var item in Model)
+        {
+            @Html.Raw($"{item.SleepHours},")
+        }
+    ];
+
+    // WATER CHART
+    new Chart(document.getElementById('waterChart'), {
+
+        type: 'line',
+
+        data: {
+            labels: labels,
+
+            datasets: [{
+                label: 'Water Intake',
+                data: waterData,
+                borderWidth: 3,
+                tension: 0.4
+            }]
+        }
+    });
+
+    // SLEEP CHART
+    new Chart(document.getElementById('sleepChart'), {
+
+        type: 'bar',
+
+        data: {
+            labels: labels,
+
+            datasets: [{
+                label: 'Sleep Hours',
+                data: sleepData,
+                borderWidth: 2
+            }]
+        }
+    });
+
+</script>
+
+<div class="bottom-nav">
+
+    <a href="/Dashboard/Index" class="nav-item">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="/Tracker/Index" class="nav-item">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="/History/Index" class="nav-item">
+        📅
+        <span>History</span>
+    </a>
+
+    <a href="/Analytics/Index" class="nav-item">
+        📈
+        <span>Analytics</span>
+    </a>
+
+</div>

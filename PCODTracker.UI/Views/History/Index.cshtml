@@ -1,0 +1,134 @@
+﻿@model List<PCODTracker.UI.Models.DailyHistoryResponse>
+
+<div class="history-page">
+
+    <h2 class="history-title">
+        📅 Health Timeline
+    </h2>
+    <div class="history-tools">
+
+        <input type="text"
+               id="searchInput"
+               placeholder="Search date..."
+               class="search-box" />
+
+        <select id="filterSelect"
+                class="filter-box">
+
+            <option value="all">
+                All Records
+            </option>
+
+            <option value="healthy">
+                Healthy
+            </option>
+
+            <option value="unhealthy">
+                Unhealthy
+            </option>
+
+        </select>
+
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="timeline-card">
+
+                <div class="timeline-date">
+                    @item.Date.ToString()
+                </div>
+
+                <div class="timeline-grid">
+
+                    <div class="timeline-box water">
+                        💧 @item.WaterIntake Glasses
+                    </div>
+
+                    <div class="timeline-box sleep">
+                        😴 @item.SleepHours Hours
+                    </div>
+
+                    <div class="timeline-box mood">
+                        😊 @item.Mood
+                    </div>
+
+                    <div class="timeline-box food">
+                        🥗 @(item.HealthyFood ? "Healthy" : "Unhealthy")
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-history">
+
+            No records yet 🌸
+
+        </div>
+    }
+
+</div>
+<script>
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const filterSelect =
+        document.getElementById("filterSelect");
+
+    function filterHistory() {
+
+        const searchValue =
+            searchInput.value.toLowerCase();
+
+        const filterValue =
+            filterSelect.value;
+
+        const historyItems =
+            document.querySelectorAll(".timeline-card");
+
+        historyItems.forEach(item => {
+
+            const text =
+                item.innerText.toLowerCase();
+
+            const isHealthy =
+                text.includes("healthy");
+
+            let show = true;
+
+            // SEARCH
+            if (!text.includes(searchValue)) {
+                show = false;
+            }
+
+            // FILTER
+            if (filterValue === "healthy" && !isHealthy) {
+                show = false;
+            }
+
+            if (filterValue === "unhealthy" && isHealthy) {
+                show = false;
+            }
+
+            item.style.display =
+                show ? "block" : "none";
+
+        });
+    }
+
+    searchInput.addEventListener(
+        "keyup",
+        filterHistory);
+
+    filterSelect.addEventListener(
+        "change",
+        filterHistory);
+
+</script>

@@ -1,0 +1,73 @@
+﻿@model List<PCODTracker.UI.Models.DailyHistoryResponse>
+
+<h1 class="calendar-title">
+    📅 Monthly Wellness Calendar
+</h1>
+
+<div class="calendar-grid">
+
+    @foreach (var item in Model)
+    {
+        var score = 0;
+
+        if (item.WaterIntake >= 6)
+            score += 25;
+
+        if (item.SleepHours >= 7)
+            score += 25;
+
+        if (item.HealthyFood)
+            score += 25;
+
+        if (item.Mood == "Happy")
+            score += 25;
+
+        var cardClass =
+        score >= 75
+        ? "good-day"
+        : score >= 50
+        ? "normal-day"
+        : "bad-day";
+
+        <div class="calendar-card @cardClass">
+
+            <div class="calendar-date">
+                @item.Date
+            </div>
+
+            <div class="calendar-score">
+                @score%
+            </div>
+
+            <div class="calendar-mood">
+                😊 @item.Mood
+            </div>
+
+        </div>
+    }
+
+</div>
+
+<div class="bottom-nav">
+
+    <a href="/Dashboard/Index" class="nav-item">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="/Tracker/Index" class="nav-item">
+        ➕
+        <span>Add</span>
+    </a>
+
+    <a href="/History/Index" class="nav-item">
+        📅
+        <span>History</span>
+    </a>
+
+    <a href="/Calendar/Index" class="nav-item">
+        📊
+        <span>Calendar</span>
+    </a>
+
+</div>

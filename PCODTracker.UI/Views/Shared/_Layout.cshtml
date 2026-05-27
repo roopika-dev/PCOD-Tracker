@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ff69b4">
+    <meta charset="utf-8" />
+    <link rel="icon"
+          type="image/png"
+          href="~/images/logo.png" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest"
+          href="~/manifest.json" />
+    <title>
+        @ViewData["Title"] - PCODTracker.UI
+    </title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/PCODTracker.UI.styles.css"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+    <header class="app-header">
+
+        <div class="app-logo">
+            🌙 PCOD Tracker
+        </div>
+
+    </header>
+    <div class="main-mobile">
+
+        @RenderBody()
+
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <div class="mobile-nav">
+
+    <a href="/Dashboard/Index">
+        🏠
+        <span>Home</span>
+    </a>
+
+    <a href="/Tracker/Index">
+        💖
+        <span>Tracker</span>
+    </a>
+        <a href="/History/Index">
+            📅
+            <span>History</span>
+        </a>
+    <a href="/Auth/Logout">
+        🚪
+        <span>Logout</span>
+    </a>
+
+</div>
+    <script>
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+
+            e.preventDefault();
+
+            deferredPrompt = e;
+
+            console.log("PWA install ready");
+
+        });
+    </script>
+
+    <script>
+
+        async function requestNotificationPermission() {
+
+            if (!("Notification" in window)) {
+                return;
+            }
+
+            if (Notification.permission === "default") {
+
+                const permission =
+                    await Notification.requestPermission();
+
+                console.log(permission);
+            }
+        }
+
+        requestNotificationPermission();
+
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log('Service Worker Registered'));
+        }
+    </script>
+</body>
+
+</html>
