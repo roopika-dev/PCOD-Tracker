@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
 COPY --from=build /app/publish .
+COPY Firebase ./Firebase
 
 ENV ASPNETCORE_URLS=http://+:10000
 
